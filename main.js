@@ -15,31 +15,47 @@ function digitIsPressed(digit) {
 
 
 function operatorIsPressed(operator) {
-    activeOperator = operator;
-    doMath();
-    storedNumber = activeNumber;
-    updateScreen();
-    activeNumber = '';
-    activeOperator = '';
+    if (activeNumber && storedNumber && activeOperator) {
+        doMath()
+        activeOperator = operator;
+        activeNumber = '';
+        updateScreen();
+    }
+    else
+    if(resultIs != ''){
+        activeOperator = operator;
+        doMath();
+        storedNumber = resultIs;
+        updateScreen();
+    }
+    else
+    {
+        activeOperator = operator;
+        doMath();
+        storedNumber = activeNumber;
+        activeNumber = '';
+        updateScreen();
+    }
 }
-
 function equalsIsPressed() {
     doMath();
-    updateScreen();
-    resultIs = activeNumber;
+    resultIs = storedNumber;
     storedNumber = '';
     activeOperator = '';
     activeNumber = '';
+    document.getElementById('screen').innerHTML = resultIs; 
 }
 
 function clearScreen() {
     activeNumber = '';
     activeOperator = '';
     storedNumber = '';
+    resultIs = '';
     updateScreen();
 }
+
 function updateScreen() {
-    document.getElementById('screen').innerHTML = activeNumber + activeOperator;
+    document.getElementById('screen').innerHTML = storedNumber + activeOperator + activeNumber;
 }
 function doMath() {
     if (activeNumber && storedNumber && activeOperator) {
@@ -50,13 +66,12 @@ function doMath() {
             case '-':
                 storedNumber = parseFloat(storedNumber) - parseFloat(activeNumber);
                 break;
-            case 'x':
+            case '*':
                 storedNumber = parseFloat(storedNumber) * parseFloat(activeNumber);
                 break;
             case '/':
                 storedNumber = parseFloat(storedNumber) / parseFloat(activeNumber);
                 break;
-
         }
 
     }
